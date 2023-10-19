@@ -32,7 +32,7 @@ Apple's HEIC compression tool in Finder seems to have had a bit too outdated—i
 
 #### Example
 
-![截屏2023-10-19 17.36.27](README.assets/截屏2023-10-19 17.36.27.png)
+![example](README.assets/example.png)
 
 #### Reminder
 

@@ -10,10 +10,19 @@ let file_names = CommandLine.arguments
 print(file_names)
 let origin_path = file_names[1]
 let export_path = file_names[2]
+let compress_ratio = file_names[3]
+var cgFloat_compress = CGFloat(1.0)
+if let doubleValue = Double(compress_ratio) {
+    cgFloat_compress = CGFloat(doubleValue)
+    print("compress ratio:", cgFloat_compress)
+} else {
+    print("The string does not represent a valid number.")
+}
+
 let choose_export = "6"
-print(origin_path)
-print(export_path)
-print(choose_export)
+print("origin_path", origin_path)
+print("export_path", export_path)
+//print(choose_export)
 
 let originalImageURL = URL(fileURLWithPath: origin_path)
 let exportedImageURL = URL(fileURLWithPath: export_path)
@@ -45,7 +54,8 @@ guard let colorSpace_2100_HLG = CGColorSpace(name: CGColorSpace.itur_2100_HLG) e
 
 let context = CIContext()
 let options_full = [kCGImageDestinationLossyCompressionQuality as CIImageRepresentationOption: 1.0 as CGFloat]
-let options_compress = [kCGImageDestinationLossyCompressionQuality as CIImageRepresentationOption: 0.5 as CGFloat]
+//let options_compress = [kCGImageDestinationLossyCompressionQuality as CIImageRepresentationOption: 0.5 as CGFloat]
+let options_compress = [kCGImageDestinationLossyCompressionQuality as CIImageRepresentationOption: cgFloat_compress as CGFloat]
 
 
 guard let image = CIImage(contentsOf: originalImageURL,
@@ -140,7 +150,7 @@ else if (choose_export == "6") {
     do {
     //    _ = try context.writeHEIFRepresentation(of: image, to: exportedImageURL, format: CIFormat.RGBA8, colorSpace: colorSpace, options: options)
     //    print("It worked")
-        _ = try context.writeHEIF10Representation(of: image, to: exportedImageURL, colorSpace: colorSpace_2100_PQ, options: options_full)
+        _ = try context.writeHEIF10Representation(of: image, to: exportedImageURL, colorSpace: colorSpace_2100_PQ, options: options_compress)
         print("It worked")
     }
     catch {

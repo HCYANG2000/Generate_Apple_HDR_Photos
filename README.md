@@ -20,7 +20,7 @@ Apple's HEIC compression tool in Finder seems to have had a bit too outdated—i
 
 ### Enabling HDR in Lightroom/Adobe Camera Raw
 
-![截屏2023-10-19 17.22.46](README.assets/截屏2023-10-19 17.22.46.png)
+![截屏2023-10-19 17.22.46](README.assets/截屏2023-10-19 17.22.46-7708805.png)
 
 ### Output 16bit PNG/TIFF image 
 

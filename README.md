@@ -39,4 +39,6 @@ Apple's HEIC compression tool in Finder seems to have had a bit too outdated—i
 * Compress ratio in $(0, 1.0]$, suggest $\geq 0.75$, otherwise the file size is not enough for storing high dynamic range information
 * Remember to Add '**.heic**' in output path
 
-w
+### Send to Apple Photos
+
+* Enjoy the smooth viewing experience of HDR image in iPhone/iPad/Mac 

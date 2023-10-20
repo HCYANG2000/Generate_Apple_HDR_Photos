@@ -2,6 +2,8 @@
 
 ### A swift script to output 10bit HDR HEIC image for Apple Photos
 
+**Support <u>macOS Sonoma and later</u> +  <u>Swift >=5.9</u>**
+
 ## Background
 
 In the latest release of Lightroom and Adobe Camera Raw (October 2023), there's updated support for viewing, editing, and exporting HDR images. **When exporting HDR images, Adobe exclusively supports 16-bit PNG, TIFF, JPEG XL formats, and 10-bit AVIF files.**
@@ -42,3 +44,17 @@ Apple's HEIC compression tool in Finder seems to have had a bit too outdated—i
 ### Send to Apple Photos
 
 * Enjoy the smooth viewing experience of HDR image in iPhone/iPad/Mac 
+
+## Bash to process multiple files
+
+### Put HDR images from Lightroom in one directory
+
+### Use `hdr_bash.sh` to process multiple images
+
+`Usage: bash hdr_bash.sh $directory_path $compress_ratio $num_of_threads`
+
+#### Reminder
+
+* Adjust `num_of_threads` based on your computer
+* The output HEIC images are put inside the original directory
+

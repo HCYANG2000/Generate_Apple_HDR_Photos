@@ -2,7 +2,7 @@
 
 ### An app *HDR Compressor* supporting compressing raw/tiff/jpg image into heic format, including HDR image
 
-[HDR Compressor]()
+[HDR Compressor](https://github.com/HCYANG2000/Generate_Apple_HDR_Photos/blob/main/HDR_Compressor.zip)
 
 ### A swift script to output 10bit HDR HEIC image for Apple Photos
 

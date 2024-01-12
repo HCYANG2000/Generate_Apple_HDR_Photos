@@ -19,7 +19,7 @@ if let doubleValue = Double(compress_ratio) {
     print("The string does not represent a valid number.")
 }
 
-let choose_export = "6"
+let choose_export = file_names[4]
 print("origin_path", origin_path)
 print("export_path", export_path)
 //print(choose_export)

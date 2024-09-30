@@ -1,12 +1,30 @@
 # HDR_Image_iOS17
 
-### An app *HDR Compressor* supporting compressing raw/tiff/jpg image into heic format, including HDR image
+### <u>NEW!! Update for macOS Sequoia</u> fixing "HDR" tag issue when importing raw images
+
+#### Future plan: Add support for GainMap HDR
+
+### An app *HDR Compressor* supporting compressing raw/tiff/jpg image into heic format, including HDR image 
 
 [HDR Compressor](https://github.com/HCYANG2000/Generate_Apple_HDR_Photos/blob/main/HDR_Compressor.zip)
 
-### A swift script to output 10bit HDR HEIC image for Apple Photos
+------
+
+------
+
+------
+
+### <u>Scripts contain bug!! Update soon</u>
+
+### A swift script to output 10bit HDR HEIC image for Apple Photos 
 
 **Support <u>macOS Sonoma and later</u> +  <u>Swift >=5.9</u>**
+
+------
+
+------
+
+------
 
 ## Background
 

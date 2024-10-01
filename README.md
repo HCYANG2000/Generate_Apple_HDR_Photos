@@ -1,10 +1,14 @@
 # HDR_Image_iOS17
 
-### <u>NEW!! Update for macOS Sequoia</u> fixing "HDR" tag issue when importing raw images
 
-#### Future plan: Add support for GainMap HDR
 
-### An app *HDR Compressor* supporting compressing raw/tiff/jpg image into heic format, including HDR image 
+### <u>NEW!! Update for macOS Sequoia</u> 
+
+1. Fixed "HDR" tag issue when importing raw images
+1. Fixed "HLG BT2020" compression issue 
+1. <u>**Partial support for GainMap HDR (Not verified, may contain bug)**</u>
+
+### An app *HDR Compressor* supporting compressing HDR raw/tiff/jpg/avif images
 
 [HDR Compressor](https://github.com/HCYANG2000/Generate_Apple_HDR_Photos/blob/main/HDR%20Compressor.zip)
 

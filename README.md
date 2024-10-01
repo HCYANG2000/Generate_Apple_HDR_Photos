@@ -8,7 +8,7 @@
 1. Fixed "HLG BT2020" compression issue
 1. <u>**Partial support for GainMap HDR (Not verified, may contain bug)**</u>  
 
-   [ideas from [PQ_HDR_to_Gain_Map_HDR](https://github.com/chemharuka/PQ_HDR_to_Gain_Map_HDR) and [Frank Rupprecht](https://gist.github.com/kiding/fa4876ab4ddc797e3f18c71b3c2eeb3a?permalink_comment_id=4289828#gistcomment-4289828)
+   (ideas from [PQ_HDR_to_Gain_Map_HDR](https://github.com/chemharuka/PQ_HDR_to_Gain_Map_HDR) and [Frank Rupprecht](https://gist.github.com/kiding/fa4876ab4ddc797e3f18c71b3c2eeb3a?permalink_comment_id=4289828#gistcomment-4289828))
 
 ### An app *HDR Compressor* supporting compressing HDR raw/tiff/jpg/avif images
 

@@ -1,64 +1,39 @@
-# #!/bin/bash
-
-# # Check if the directory path is provided
-# if [ "$#" -ne 2 ]; then
-#     echo "Usage: $0 directory_path compress_ratio"
-#     exit 1
-# fi
-
-# # Check if the provided argument is a directory
-# if [ ! -d "$1" ]; then
-#     echo "Error: $1 is not a directory"
-#     exit 1
-# fi
-
-# mkdir "$1""/heic"
-# # List all files in the directory
-# for file in "$1"/*
-# do
-#     if [ -f "$file" ]; then
-#     # Extracting directory part
-#         dir="${file%/*}"
-#         # Extracting filename without extension (DSC01831)
-#         filename="${file##*/}"
-#         basename="${filename%.*}"
-#         # Extracting extension part (.avif)
-#         extension="${filename##*.}"
-#         extension=".$extension"
-#         # filename="${file%.*}"
-#         hdr_name="./$dir/heic/""$basename""_hdr.heic"
-#         swift HDR_iOS17.swift $file $hdr_name $2
-#     fi
-# done
-
 #!/bin/bash
+# hdr_bash.sh — Example script: sweep quality levels for comparison
+# Useful for finding the best quality/file-size trade-off before batch processing.
+# Edit the filenames and modes below to match your images.
 
-# Check if the directory path is provided
-if [ "$#" -ne 3 ]; then
-    echo "Usage: $0 directory_path compress_ratio num_of_threads"
-    exit 1
-fi
+SWIFT_SCRIPT="HDR_iOS17.swift"
 
-# Check if the provided argument is a directory
-if [ ! -d "$1" ]; then
-    echo "Error: $1 is not a directory"
-    exit 1
-fi
+# ── Non-HDR example ────────────────────────────────────────────────────────────
+# Mode 1: 8-bit HEIF, Display P3, compressed
+# Quality sweep from 0.3 to 1.0 in steps of 0.1
 
-mkdir -p "$1""/heic"
+echo "=== Non-HDR sweep: 8-bit HEIF Display P3, quality 0.3–1.0 ==="
+for step in $(seq 3 1 10); do
+    input="Example_NonHDR.tif"
+    quality="0.$step"
+    label=$(printf "%02d" "$step")
+    output="Example_NonHDR_q${label}.heic"
+    echo "  quality $quality → $output"
+    swift "$SWIFT_SCRIPT" "$input" "$output" "$quality" "1"
+done
 
-# Define the function to be run in parallel
-process_file() {
-    file="$1"
-    ratio="$2"
-    dir="${file%/*}"
-    filename="${file##*/}"
-    basename="${filename%.*}"
-    hdr_name="./$dir/heic/""$basename""_hdr.heic"
-    swift HDR_iOS17.swift "$file" "$hdr_name" "$ratio"
-}
+echo ""
 
-export -f process_file
+# ── HDR example ────────────────────────────────────────────────────────────────
+# Mode 6: 10-bit HEIF, BT.2100 PQ, compressed
+# Quality sweep from 0.60 to 1.00 in steps of 0.05
+# Note: quality below 0.75 may lose HDR detail — check file sizes
 
-# Find all files in the directory and pass them to xargs
-find "$1" -type f | xargs -I {} -P $3 bash -c 'process_file "$@"' _ {} "$2"
+echo "=== HDR sweep: 10-bit HEIF BT.2100 PQ, quality 0.60–1.00 ==="
+for step in 60 65 70 75 80 85 90 95 100; do
+    input="Example_HDR.tif"
+    # Convert integer step to decimal quality (e.g. 85 → 0.85)
+    quality=$(printf "0.%02d" "$step" | sed 's/0\.10/1.00/')
+    [ "$step" -eq 100 ] && quality="1.0"
+    label=$(printf "%03d" "$step")
+    output="Example_HDR_q${label}.heic"
+    echo "  quality $quality → $output"
+    swift "$SWIFT_SCRIPT" "$input" "$output" "$quality" "6"
+done

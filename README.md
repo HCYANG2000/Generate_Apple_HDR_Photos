@@ -1,88 +1,155 @@
-# HDR_Image_iOS17
+# HDR Image Converter for Apple Photos
 
+Convert HDR photos (from Lightroom / Adobe Camera Raw) into 10-bit HEIC files that display correctly in Apple Photos on iPhone, iPad, and Mac.
 
+**Requires macOS 26 (Tahoe) or later · Swift 5.9+**
 
-### <u>NEW!! Update for macOS Sequoia</u> 
+---
 
-1. Fixed "HDR" tag issue when importing raw images
-1. Fixed "HLG BT2020" compression issue
-1. <u>**Partial support for GainMap HDR (Not verified, may contain bug)**</u>  
+## What's New
 
-   (ideas from [PQ_HDR_to_Gain_Map_HDR](https://github.com/chemharuka/PQ_HDR_to_Gain_Map_HDR) and [Frank Rupprecht](https://gist.github.com/kiding/fa4876ab4ddc797e3f18c71b3c2eeb3a?permalink_comment_id=4289828#gistcomment-4289828))
+- Fixed "HDR" tag issue when importing RAW images
+- Fixed HLG BT.2100 compression issue
+- Partial support for GainMap HDR
+  *(ideas from [PQ_HDR_to_Gain_Map_HDR](https://github.com/chemharuka/PQ_HDR_to_Gain_Map_HDR) and [Frank Rupprecht](https://gist.github.com/kiding/fa4876ab4ddc797e3f18c71b3c2eeb3a?permalink_comment_id=4289828#gistcomment-4289828))*
+- Improved error messages and argument validation
+- Added `--help` flag to the Swift script
 
-### An app *HDR Compressor* supporting compressing HDR raw/tiff/jpg/avif images
-
-[HDR Compressor](https://github.com/HCYANG2000/Generate_Apple_HDR_Photos/blob/main/HDR%20Compressor.zip)
-
-------
-
-------
-
-------
-
-### <u>Scripts contain bug!! Update soon</u>
-
-### A swift script to output 10bit HDR HEIC image for Apple Photos 
-
-**Support <u>macOS Sonoma and later</u> +  <u>Swift >=5.9</u>**
-
-------
-
-------
-
-------
+---
 
 ## Background
 
-In the latest release of Lightroom and Adobe Camera Raw (October 2023), there's updated support for viewing, editing, and exporting HDR images. **When exporting HDR images, Adobe exclusively supports 16-bit PNG, TIFF, JPEG XL formats, and 10-bit AVIF files.**
+When exporting HDR images from Lightroom or Adobe Camera Raw, the supported formats are 16-bit PNG/TIFF, JPEG XL, and 10-bit AVIF. While Apple Photos can open these, there are drawbacks:
 
-With iOS 17, iPadOS 17, and macOS Sonoma, Apple's Photos app can now view all these formats. Despite this, Apple's default image format remains HEIC. **There are issues when viewing JPEG XL and AVIF files in the Photos app, as they require software decoding.** And, 16-bit PNG and TIFF files are not ideal for storage due to their large file sizes.
+- **AVIF / JPEG XL** require software decoding and can feel slow or buggy in Photos
+- **PNG / TIFF** produce very large files
 
- <img src="README.assets/截屏2023-10-19 17.16.11.png" alt="截屏2023-10-19 17.16.11" style="zoom: 25%;" /><img src="README.assets/截屏2023-10-19 17.16.01.png" alt="截屏2023-10-19 17.16.01" style="zoom:25%;" />
+Apple's built-in HEIC tool in Finder only supports 8-bit SDR compression. This script uses Apple's CoreImage APIs (available in Swift) to write proper **10-bit HDR HEIC** files that Photos handles natively and efficiently.
 
-<img src="README.assets/截屏2023-10-19 17.16.34.png" alt="截屏2023-10-19 17.16.34" style="zoom:25%;" /><img src="README.assets/截屏2023-10-19 17.16.22.png" alt="截屏2023-10-19 17.16.22" style="zoom:25%;" />
+<img src="README.assets/截屏2023-10-19 17.16.11.png" alt="Lightroom HDR export formats" style="zoom: 25%;" /><img src="README.assets/截屏2023-10-19 17.16.01.png" alt="Lightroom HDR export settings" style="zoom:25%;" />
 
-Apple's HEIC compress tool in Finder only supports non-HDR 8-bit compress. To output 10bit HDR HEIC image for Apple Photos, swift script is required (Apple provides such tools in latest version of Swift but not implement it into Finder...).
+<img src="README.assets/截屏2023-10-19 17.16.34.png" alt="Photos HDR display" style="zoom:25%;" /><img src="README.assets/截屏2023-10-19 17.16.22.png" alt="Photos HDR detail" style="zoom:25%;" />
 
-Apple's HEIC compression tool in Finder seems to have had a bit too outdated—it only supports non-HDR 8-bit compression. However, Apple provides 10-bit HDR HEIC transformation tools in the latest Swift version.
+---
 
-## Usage
+## Quick Start
 
-### Enabling HDR in Lightroom/Adobe Camera Raw
+### Step 1 — Enable HDR in Lightroom / Adobe Camera Raw
 
 ![hdr_enable](README.assets/hdr_enable.jpg)
 
-### Output 16bit PNG/TIFF image 
+### Step 2 — Export as 16-bit TIFF or PNG
 
-<img src="README.assets/截屏2023-10-19 17.16.01.png" alt="截屏2023-10-19 17.16.01" style="zoom:100%;" />
+<img src="README.assets/截屏2023-10-19 17.16.01.png" alt="Export as TIFF" style="zoom:100%;" />
 
-### Output HEIC HDR image use swift script
+### Step 3 — Convert with the Swift script
 
-`swift HDR_iOS17.swift $path_of_PNG/TIFF_image$ $path_to_output_heic$ $compress ratio$`
+```bash
+swift HDR_iOS17.swift <input> <output.heic> <quality> <mode>
+```
 
-#### Example
+Run `swift HDR_iOS17.swift --help` to see all options.
+
+### Step 4 — Import into Apple Photos
+
+Drag the `.heic` file into Photos and enjoy smooth HDR playback on any Apple device.
+
+---
+
+## Examples
+
+The `example_images/` folder contains real sample photos to test with.
+
+### JPEG → HDR HEIC (mode 5, recommended)
+
+```bash
+swift HDR_iOS17.swift example_images/DSC06294.JPG example_images/output/DSC06294_hdr.heic 0.85 5
+```
+
+### AVIF → HDR HEIC (mode 5)
+
+```bash
+swift HDR_iOS17.swift example_images/DSC05810.avif example_images/output/DSC05810_hdr.heic 0.85 5
+```
+
+### HEIC → HDR HEIC re-encode (mode 5)
+
+```bash
+swift HDR_iOS17.swift example_images/DSC07633.heic example_images/output/DSC07633_hdr.heic 0.85 5
+```
+
+### RAW (.ARW) → HDR HEIC (mode 7 — uses CIRAWFilter)
+
+```bash
+swift HDR_iOS17.swift example_images/DSC06175.ARW example_images/output/DSC06175_hdr.heic 1.0 7
+```
+
+> For RAW files, quality `1.0` is recommended. Use mode `7` (HLG) or `8` (PQ).
 
 ![example](README.assets/example.png)
 
-#### Reminder
+---
 
-* Compress ratio in $(0, 1.0]$, suggest $\geq 0.75$, otherwise the file size is not enough for storing high dynamic range information
-* Remember to Add '**.heic**' in output path
+## Export Modes
 
-### Send to Apple Photos
+| Mode | Bit depth | Color space    | Quality       | Best for                        |
+|------|-----------|----------------|---------------|---------------------------------|
+| 1    | 8-bit     | Display P3     | Compressed    | Standard SDR (smaller file)     |
+| 2    | 8-bit     | Display P3     | Lossless      | Standard SDR (full quality)     |
+| 3    | 10-bit    | Display P3     | Compressed    | Wide-gamut SDR (smaller file)   |
+| 4    | 10-bit    | Display P3     | Lossless      | Wide-gamut SDR (full quality)   |
+| **5**| **10-bit**| **BT.2100 HLG**| **Lossless**  | **HDR — recommended**           |
+| 6    | 10-bit    | BT.2100 PQ     | Compressed    | HDR PQ (Dolby Vision-style)     |
+| 7    | 10-bit    | BT.2100 HLG    | Lossless      | HDR from RAW (CIRAWFilter)      |
+| 8    | 10-bit    | BT.2100 PQ     | Lossless      | HDR from RAW (CIRAWFilter)      |
 
-* Enjoy the smooth viewing experience of HDR image in iPhone/iPad/Mac 
+**Quality tips:**
+- Range is `0.1` to `1.0`
+- Values below `0.75` may not store enough data for the full HDR range
+- `0.85` is a good starting point for JPEG/AVIF/HEIC; use `1.0` for RAW
 
-## Bash to process multiple files
+---
 
-### Put HDR images from Lightroom in one directory
+## Batch Processing with `compress.sh`
 
-### Use `hdr_bash.sh` to process multiple images
+To convert an entire folder at once:
 
-`Usage: bash hdr_bash.sh $directory_path $compress_ratio $num_of_threads`
+```bash
+bash compress.sh <directory> <quality> <mode> [threads]
+```
 
-#### Reminder
+**Examples:**
 
-* Adjust `num_of_threads` based on your computer
-* The output HEIC images are put inside the original directory
+```bash
+# Convert all images in ./photos — HDR HLG mode, 4 parallel threads
+bash compress.sh ./photos 0.85 5 4
 
+# Convert the included sample images
+bash compress.sh ./example_images 0.85 5 4
+```
+
+**Notes:**
+- Output HEIC files are saved to `<directory>/heic/`
+- Supported input: TIFF, JPEG, PNG, AVIF, HEIC, DNG, ARW, CR2, CR3, NEF, RAF
+- Default thread count is 4; adjust based on your machine
+- Run `bash compress.sh --help` for full usage
+
+---
+
+## Quality Comparison with `hdr_bash.sh`
+
+`hdr_bash.sh` is an example script that sweeps through a range of quality values so you can compare output files and pick the best setting for your images.
+
+Edit the filenames inside the script, then run:
+
+```bash
+bash hdr_bash.sh
+```
+
+---
+
+## HDR Compressor App
+
+A standalone macOS app version is also available:
+
+[HDR Compressor](https://github.com/HCYANG2000/Generate_Apple_HDR_Photos/blob/main/HDR%20Compressor.zip)
